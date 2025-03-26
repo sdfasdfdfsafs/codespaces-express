@@ -120,7 +120,7 @@ app.listen(port, () => {
 app.get('/support', (req, res) =>{
   res.render("support.ejs");
 })
-//delete email@gmail.com, name
+//delete email@gmail.com, name - hh
 //delete email, name
 //delete email@hotmail.com, name
 //delete email@, name
