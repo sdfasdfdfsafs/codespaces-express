@@ -1,0 +1,67 @@
+.select{
+    margin-right: 4.2em;
+    margin-left: 4.2em;
+}
+.topright {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    font-size: 18px;
+    }
+.again {
+    border: 1px solid black;
+    width: 28%;
+    background-color: #dc232364;
+    text-align: center;
+    display: inline-block;
+}
+.Center{
+    margin: auto;
+}
+
+body {
+    text-align: center;
+}
+form {
+    display: inline-block;
+}
+
+div.scrollmenu {
+    background-color: #333;
+    overflow: auto;
+    white-space: nowrap;
+}
+  
+div.scrollmenu a {
+display: inline-block;
+color: white;
+text-align: center;
+padding: 14px;
+text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+background-color: #777;
+}
+
+.vertical {
+
+    border-radius: 50%;
+    background-color: #e1e7e1e5;
+    font-style: oblique;
+    height: 48px;
+    width: 60px;
+    font-size: 16px
+    
+}
+.vertical:hover{
+    background-color: #c7cbc9;
+}
+
+.image{
+    height: 100%;
+    background: url(https://www.shutterstock.com/image-photo/salad-tomatoes-greens-dressing-oil-600nw-269131160.jpg);
+    background-repeat: repeat;
+    background-size: cover;
+    opacity: 0.8;
+}

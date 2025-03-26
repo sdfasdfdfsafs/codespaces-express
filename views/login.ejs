@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Site</title>
+        <link rel="stylesheet" href="/styles.css" />
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    </head>   
+
+    <body>
+        <!-- Add HTML markup elements for your web site below -->
+
+        <div class="topright">
+            <form action = "/support">
+                <input type="submit" value="Support" class="test"/>
+                <style> input.test { background:none; border:none; }</style>
+            </form>
+        </div>
+        
+        <h2 name = "title">Welcome to Site</h2>
+        <br>
+
+        <br>
+        <div>
+
+        <form name = "myForm" action="/login" onsubmit="return validateForm()" method="post">
+            <div><input type = "text" name = "email" placeholder = "Email"></div>
+            
+            <br/>
+            <div><input type = "password" placeholder = "Password" name = "password"></div>
+            <br/>
+
+            <div><input type="submit" value="login"/></div>
+
+        </form>
+        <br>
+        <% if(error) { %>
+            <div class = "again" id = "yes">Error: Incorrect Username or Password</div>
+        <% } %>
+        <br>
+        <form action="/register">
+            <div><input type="submit" value="register"/></div>
+        </form>
+        </div>
+      
+    </body>
+
+    <script type="text/javascript" src="/login_script.js"></script>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Site</title>
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <script type="text/javascript" src="script.js"></script>
+    </head>
+
+    <body>
+        <!-- Add HTML markup elements for your web site below -->
+        <h2 name = "title" id = "test">Make An Order</h2> 
+        
+        <div>
+        <form action = "/order" method = "post">
+            <div class="scrollmenu">
+
+                <img src="images/new.jpg" style="width:144px;height:96px;">
+                <img src="images/new.jpg" style="width:144px;height:96px;">
+                <img src="images/new.jpg" style="width:144px;height:96px;">
+                <img src="images/new.jpg" style="width:144px;height:96px;">
+
+            </div>
+            <br>
+            <div class="scrollmenu">
+                <select name = "food1" class="select">
+                    <option>1</option>
+                </select>
+                <select name = "food2" class="select">
+                    <option>1</option>
+                </select>
+                <select name = "food3" class="select">
+                    <option>1</option>
+                </select>
+                <select name = "food4" class="select">
+                    <option>1</option>
+                </select>
+
+            </div>
+            <br>
+            <input type = "submit" value = "Submit"/>
+        </form>
+
+        <br/>
+        <script>
+            let name = '<%- name %>'
+            document.getElementById('test').innerHTML = 'Make an Order, ' + name;
+        </script>
+        </div>
+    </body>
+
+</html>
