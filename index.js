@@ -30,13 +30,37 @@ mongoose.connect(uri);
 
 let Comment = require('./comments');
 let User = require('./users')
+let Order = require('./orders')
 app.get('/', (req, res) => {
   res.render("front.ejs");
 
 })
 //Olenna Tyrell
 //diana_rigg@gameofthron.es
+app.get('/admin', (req, res)=>{
+  res.render('admin.ejs', {error: false});
+})
 
+app.post('/admin', async (req, res)=>{
+  var em = req.body.email;
+  var ps = req.body.password;
+  var test = await User.findOne({ email: em });
+  if(!test){
+    res.render("admin.ejs",{error:true})
+  }
+  else if (test.password == ps && test.email == em && String(test.email) == process.env.ADMIN){
+    const orders = await Order.find().sort({ date: 1 });
+    res.render('list.ejs', {Order: orders});
+  } else {
+    res.render("admin.ejs",{error:true})
+  }
+})
+app.post('/deleteOrder', async (req, res)=>{
+  var id = req.body.id
+  const del = await Order.findByIdAndDelete(id);
+  const orders = await Order.find().sort({ date: 1 });
+  res.render('list.ejs', {Order: orders});
+})
 //kit_harington@gameofthron.es
 //$2b$12$fDEu1Ru66tLWAVidMN.b0.929BlfnyqdGuhWMyzfOAf/ATYOyLoY6
 function Verifier(email, req){
@@ -54,14 +78,14 @@ function Verifier(email, req){
 }
 app.post('/login', async (req,res) => {
 
-  var email1 = req.body.email;
-  var pass = req.body.password;
-  var test = await User.findOne({ email: email1 });
+  remail = req.body.email;
+  rpass = req.body.password;
+  var test = await User.findOne({ email: remail });
   if(!test){
     res.render("login.ejs",{error:true})
   }
-  else if (test.password == pass && test.email == email1){
-    res.render('welcome.ejs', { name: test.name });
+  else if (test.password == rpass && test.email == remail){
+    res.render('welcome.ejs', { name: test.name, email: remail});
   } else {
     res.render("login.ejs",{error:true})
   }
@@ -117,9 +141,7 @@ app.post('/code', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
-app.get('/support', (req, res) =>{
-  res.render("support.ejs");
-})
+
 //delete email@gmail.com, name - hh
 //delete email, name
 //delete email@hotmail.com, name
@@ -127,11 +149,17 @@ app.get('/support', (req, res) =>{
 app.post('/start', (req, res) =>{
   res.render("login.ejs", {error:false});
 })
-app.post('/order', (req, res) =>{
-  var food1 = req.body.food1;
-  var food2 = req.body.food1;
-  var food3 = req.body.food1;
-  var food4 = req.body.food1;
+app.post('/order', async (req, res) =>{
+  var test = await User.findOne({ email: remail });
+  var emailv = remail;
+  var mhajebv = req.body.food1;
+  var msemenv = req.body.food2;
+  var bradjv = req.body.food3;
+  var kesrav = req.body.food4;
   var extra = req.body.extra;
-  console.log(food1 + extra)
+  var datev = req.body.date;
+  Order.create({ mhajeb: mhajebv, msemen: msemenv, bradj: bradjv, kesra: kesrav, name: test.name, comment: extra, date: datev, email: emailv }).then(result => {
+    console.log(result)
+    res.render('back.ejs');
+  })
 })

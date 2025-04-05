@@ -4,6 +4,7 @@
     <head>
         <title>Site</title>
         <link rel="stylesheet" href="/styles.css" />
+        <link rel="stylesheet" href="/styles2.css" />
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
     </head>   
 
@@ -11,23 +12,23 @@
         <!-- Add HTML markup elements for your web site below -->
 
         <div class="topright">
-            <form action = "/support">
-                <input type="submit" value="Support" class="test"/>
+            <form action = "/admin">
+                <input type="submit" value="Admin" class="test"/>
                 <style> input.test { background:none; border:none; }</style>
             </form>
         </div>
         
-        <h2 name = "title">Welcome to Site</h2>
+        <h2 name = "title">Login</h2>
         <br>
 
         <br>
         <div>
 
         <form name = "myForm" action="/login" onsubmit="return validateForm()" method="post">
-            <div><input type = "text" name = "email" placeholder = "Email"></div>
+            <div class = "input-group"><input type = "text" name = "email" placeholder = "Email"></div>
             
             <br/>
-            <div><input type = "password" placeholder = "Password" name = "password"></div>
+            <div class = "input-group"><input type = "password" placeholder = "Password" name = "password"></div>
             <br/>
 
             <div><input type="submit" value="login"/></div>

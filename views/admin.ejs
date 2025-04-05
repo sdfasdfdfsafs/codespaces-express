@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Site</title>
+        <link rel="stylesheet" href="/styles2.css" />
+        <link rel="stylesheet" href="/styles.css" />
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    </head>   
+
+    <body>
+        <!-- Add HTML markup elements for your web site below -->
+
+        
+        <h2 name = "title">Admin</h2>
+        <br>
+
+        <br>
+        <div>
+
+        <form name = "myForm" action="/admin" onsubmit="return validateForm()" method="post">
+            <div><input type = "text" name = "email" placeholder = "Email"></div>
+            
+            <br/>
+            <div><input type = "password" placeholder = "Password" name = "password"></div>
+            <br/>
+
+            <div><input type="submit" value="login"/></div>
+
+        </form>
+        <br>
+        <% if(error) { %>
+            <div class = "again" id = "yes">Error: Incorrect Username or Password</div>
+        <% } %>
+        <br>
+        </div>
+      
+    </body>
+
+    <script type="text/javascript" src="/login_script.js"></script>
+
+</html>
