@@ -127,3 +127,11 @@ app.get('/support', (req, res) =>{
 app.post('/start', (req, res) =>{
   res.render("login.ejs", {error:false});
 })
+app.post('/order', (req, res) =>{
+  var food1 = req.body.food1;
+  var food2 = req.body.food1;
+  var food3 = req.body.food1;
+  var food4 = req.body.food1;
+  var extra = req.body.extra;
+  console.log(food1 + extra)
+})
