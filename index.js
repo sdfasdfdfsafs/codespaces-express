@@ -5,12 +5,11 @@ const port = 3000
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
-
-
 var login = false;
-const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
+const nodemailer = require('nodemailer');
 dotenv.config();
+let User = require('./users')
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
@@ -20,16 +19,15 @@ const transporter = nodemailer.createTransport({
       pass: process.env.PASS
   }
 });
-
-var remail = "test";
-var rpass = "test";
-//database connect
-const uri = process.env.CONNECT;
+app.use(session({
+  secret: "codetestgeneration123",
+  resave: false,
+  saveUninitialized: true
+}));
 mongoose.connection.on('connected', () => console.log('connected'));
 mongoose.connect(uri);
+const uri = process.env.CONNECT;
 //database connect
-
-let User = require('./users')
 let Order = require('./orders')
 app.get('/', (req, res) => {
   res.render("front.ejs");
@@ -59,8 +57,8 @@ app.post('/deleteOrder', async (req, res)=>{
   const orders = await Order.find().sort({ date: 1 });
   res.render('list.ejs', {Order: orders});
 })
-//kit_harington@gameofthron.es
-//$2b$12$fDEu1Ru66tLWAVidMN.b0.929BlfnyqdGuhWMyzfOAf/ATYOyLoY6
+req.session.email = "test";
+req.session.pass = "test";
 const requirements= [/[^A-Za-z0-9@.]/, /^[^\s@]+@(gmail|outlook|yahoo|ymail|icloud)+.[^\s@]+$/i, /(.com|.org|.fr|.net)/i];
 function Verifier(email, req){
   if (req == 0){
@@ -75,38 +73,40 @@ function Verifier(email, req){
   console.log("work!")
   return false;
 }
-app.post('/login', async (req,res) => {
 
-  remail = req.body.email;
-  rpass = req.body.password;
-  var test = await User.findOne({ email: remail });
+app.post('/login', async (req,res) => {
+  req.session.email = req.body.email;
+  req.session.pass = req.body.password;
+  var test = await User.findOne({ email: req.session.email });
   if(!test){
     res.render("login.ejs",{error:true})
   }
-  else if (test.password == rpass && test.email == remail){
-    res.render('welcome.ejs', { name: test.name, email: remail});
+  else if (test.password == req.session.pass && test.email == req.session.code){
+    res.render('welcome.ejs', { name: test.name, email: req.session.email});
   } else {
     res.render("login.ejs",{error:true})
   }
 })
 const session = require('express-session');
-app.use(session({
-  secret: "codetestgeneration123",
-  resave: false,
-  saveUninitialized: true
-}));
+
 app.get('/register', (req,res) => {
   res.render("register.ejs", {code:false, free:true, error:false});
 })
+
+
+
+
+
+
 app.post('/register', (req,res) => {
-  remail = req.body.email;
-  rpass = req.body.password;
+  req.session.email = req.body.email;
+  req.session.pass = req.body.password;
   rname = req.body.name;
-  if (Verifier(String(remail), 2) == true){
+  if (Verifier(String(req.session.email), 2) == true){
     req.session.code = Math.floor(Math.random() * (1000 - 900) + 1000);
     var mailOptions = {
       from: 'algeriangoods@gmail.com',
-      to: remail,
+      to: req.session.email,
       subject: 'Email Verification',
       text: "Here is your Email Verification code: " + String(req.session.code)
     };
@@ -128,7 +128,7 @@ app.post('/code', (req, res) => {
   //  console.log(result)
   //})
   if(req.session.code == req.body.code){
-    User.create({ email: remail, password: rpass, name: rname }).then(result => { 
+    User.create({ email: req.session.email, password: req.session.pass, name: rname }).then(result => { 
         console.log(result)
         res.render("login.ejs", {error:false});
 
@@ -139,17 +139,12 @@ app.post('/code', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
-
-//delete email@gmail.com, name - hh
-//delete email, name
-//delete email@hotmail.com, name
-//delete email@, name
 app.post('/start', (req, res) =>{
   res.render("login.ejs", {error:false});
 })
 app.post('/order', async (req, res) =>{
-  var test = await User.findOne({ email: remail });
-  var emailv = remail;
+  var test = await User.findOne({ email: req.session.email });
+  var emailv = req.session.email;
   var mhajebv = req.body.food1;
   var msemenv = req.body.food2;
   var bradjv = req.body.food3;
