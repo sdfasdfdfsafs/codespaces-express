@@ -5,7 +5,8 @@ const port = 3000
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
-var code = 0;
+
+
 var login = false;
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
@@ -19,6 +20,7 @@ const transporter = nodemailer.createTransport({
       pass: process.env.PASS
   }
 });
+
 var remail = "test";
 var rpass = "test";
 //database connect
@@ -59,7 +61,7 @@ app.post('/deleteOrder', async (req, res)=>{
 })
 //kit_harington@gameofthron.es
 //$2b$12$fDEu1Ru66tLWAVidMN.b0.929BlfnyqdGuhWMyzfOAf/ATYOyLoY6
-const requirements = [/[^A-Za-z0-9@.]/, /^[^\s@]+@(gmail|outlook|yahoo|ymail|icloud)+.[^\s@]+$/i, /(.com|.org|.fr|.net)/i];
+const requirements= [/[^A-Za-z0-9@.]/, /^[^\s@]+@(gmail|outlook|yahoo|ymail|icloud)+.[^\s@]+$/i, /(.com|.org|.fr|.net)/i];
 function Verifier(email, req){
   if (req == 0){
     if (email.match(requirements[req]) === null){
@@ -87,6 +89,12 @@ app.post('/login', async (req,res) => {
     res.render("login.ejs",{error:true})
   }
 })
+const session = require('express-session');
+app.use(session({
+  secret: "codetestgeneration123",
+  resave: false,
+  saveUninitialized: true
+}));
 app.get('/register', (req,res) => {
   res.render("register.ejs", {code:false, free:true, error:false});
 })
@@ -95,12 +103,12 @@ app.post('/register', (req,res) => {
   rpass = req.body.password;
   rname = req.body.name;
   if (Verifier(String(remail), 2) == true){
-    code = Math.floor(Math.random() * (1000 - 900) + 1000);
+    req.session.code = Math.floor(Math.random() * (1000 - 900) + 1000);
     var mailOptions = {
       from: 'algeriangoods@gmail.com',
       to: remail,
       subject: 'Email Verification',
-      text: "Here is your Email Verification code: " + String(code)
+      text: "Here is your Email Verification code: " + String(req.session.code)
     };
     transporter.sendMail(mailOptions, function(error, info){
       if (error) {
@@ -114,14 +122,12 @@ app.post('/register', (req,res) => {
 
     res.render("register.ejs", {code:false, free:true, error:true});
   }
-
-
 })
 app.post('/code', (req, res) => {
   //User.create({ email: req.body.email, password: req.body.password, name: req.body.name }).then(result => { 
   //  console.log(result)
   //})
-  if(code == req.body.code){
+  if(req.session.code == req.body.code){
     User.create({ email: remail, password: rpass, name: rname }).then(result => { 
         console.log(result)
         res.render("login.ejs", {error:false});
