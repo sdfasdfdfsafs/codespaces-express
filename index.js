@@ -5,12 +5,11 @@ const port = 3000
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
-const dotenv = require('dotenv');
-dotenv.config();
-const nodemailer = require('nodemailer');
-const requirements = [/[^A-Za-z0-9@.]/, /^[^\s@]+@(gmail|outlook|yahoo|ymail|icloud)+.[^\s@]+$/i, /(.com|.org|.fr|.net)/i];
 var code = 0;
 var login = false;
+const nodemailer = require('nodemailer');
+const dotenv = require('dotenv');
+dotenv.config();
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
@@ -28,15 +27,12 @@ mongoose.connection.on('connected', () => console.log('connected'));
 mongoose.connect(uri);
 //database connect
 
-let Comment = require('./comments');
 let User = require('./users')
 let Order = require('./orders')
 app.get('/', (req, res) => {
   res.render("front.ejs");
 
 })
-//Olenna Tyrell
-//diana_rigg@gameofthron.es
 app.get('/admin', (req, res)=>{
   res.render('admin.ejs', {error: false});
 })
@@ -63,6 +59,7 @@ app.post('/deleteOrder', async (req, res)=>{
 })
 //kit_harington@gameofthron.es
 //$2b$12$fDEu1Ru66tLWAVidMN.b0.929BlfnyqdGuhWMyzfOAf/ATYOyLoY6
+const requirements = [/[^A-Za-z0-9@.]/, /^[^\s@]+@(gmail|outlook|yahoo|ymail|icloud)+.[^\s@]+$/i, /(.com|.org|.fr|.net)/i];
 function Verifier(email, req){
   if (req == 0){
     if (email.match(requirements[req]) === null){
@@ -89,11 +86,6 @@ app.post('/login', async (req,res) => {
   } else {
     res.render("login.ejs",{error:true})
   }
-
-
-  // if(email.toLowerCase() == comments[comments.indexOf(name.toLowerCase())].email){
-  //   console.log("work")
-  // }
 })
 app.get('/register', (req,res) => {
   res.render("register.ejs", {code:false, free:true, error:false});
